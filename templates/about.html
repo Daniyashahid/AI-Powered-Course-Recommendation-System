@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartCourse</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styleAb.css') }}">
+</head>
+<header> <br>
+    <h2 class="logo"> AI SMARTCOURSE</h2>
+    <nav>
+        <a href="/Index">Home</a>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/recommend">Recommendation </a>
+        <a href="/about" class="about">About </a>
+    </nav>
+</header>
+<body>
+    <div class="d1">
+        <h1 class="text-center fw-bold">About SmartCourse</h1><br>
+        <p>Learn how SmartCourse uses AI to deliver intelligent course recommendations</p><br>
+    </div>
+    <div class="d2">
+        <h2 class="fw-bold mb-4">Project Overview</h2>
+        <p>SmartCourse is an AI-powered course recommendation system designed to help students discover the most relevant courses using advanced Natural Language Processing (NLP) and Machine Learning. It combines keyword-based (TF-IDF) and semantic (Neural Embedding) models to provide accurate, context-aware recommendations. </p>
+    </div>
+    <section class="py-5">
+        <div class="container text-center">
+            <h2 class="fw-bold mb-4">System Capabilities</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card feature-card p-4 border-0 shadow-sm">
+                        <h4>🔍 TF-IDF Model</h4>
+                        <p class="text-muted">
+                            Finds courses based on exact keyword matching for accurate, context-relevant results.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card feature-card p-4 border-0 shadow-sm">
+                        <h4>🧠 Neural Model</h4>
+                        <p class="text-muted">
+                            Uses deep learning and sentence transformers for semantic understanding of queries.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card feature-card p-4 border-0 shadow-sm">
+                        <h4>📊 Personalized Results</h4> <br>
+                        <p class="text-muted">
+                            Generates unique, preference-based recommendations with relevance scores.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="py-5" id="d3">
+        <div class="container">
+            <h2 class="fw-bold mb-4">Technical Implementation</h2>
+            <div class="row text-center g-4">
+                <div class="col-md-3 col-6">
+                    <div class="card2 border-0 shadow-sm p-3 info-card">
+                        <h6 class="fw-bold mb-4">🧩 Backend</h6>
+                        <p>Python (Flask), REST API</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="card2 border-0 shadow-sm p-3 info-card">
+                        <h6 class="fw-bold mb-4">🤖 ML/NLP</h6>
+                        <p>spaCy, Sentence-Transformers, scikit-learn</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="card2 border-0 shadow-sm p-3 info-card">
+                        <h6 class="fw-bold mb-4">💾 Database</h6>
+                        <p>SQLite for storing user history & saved results</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="card2 border-0 shadow-sm p-3 info-card">
+                        <h6 class="fw-bold mb-4">🎨 Frontend</h6>
+                        <p>HTML5, Bootstrap 5, JavaScript (Fetch API)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="py-5">
+        <div class="container">
+            <h2 class="fw-bold mb-4" id="d4">Why Model Comparison?</h2>
+            <p>
+                The purpose of using two different recommendation models is to highlight
+                how identical user queries can produce different results based on
+                underlying techniques. TF-IDF focuses on exact keyword matching, while
+                the Neural model captures semantic meaning and contextual similarity.
+                This comparison helps users understand the strengths and limitations
+                of each approach in real-world recommendation systems.
+            </p>
+        </div>
+    </section>
+    <section class="bg-light">
+        <div class="container">
+            <br>
+            <h2 class="fw-bold mb-4" id="d4" style="color: #912f56">System Workflow</h2>
+            <ol>
+                <li>User enters a natural language query</li>
+                <li>Selected model processes the query</li>
+                <li>Relevant courses are ranked using similarity scores</li>
+                <li>Results are displayed with relevance percentages</li>
+                <li>User actions (search, save) are stored in SQLite database</li>
+            </ol>
+        </div><br>
+    </section>
+    <section class="py-5" id="d4">
+        <div class="container">
+            <h2 class="fw-bold mb-4">Dataset Information</h2>
+            <p>
+                SmartCourse uses the <strong>Course Recommendation System Dataset</strong> containing over
+                <strong>8,500 courses</strong> with details like:
+            </p><br>
+            <ul class="list-group list-group-flush mx-auto" style="max-width: 500px;">
+                <li class="list-group-item">📘 Course Name</li>
+                <li class="list-group-item">🏛️ University</li>
+                <li class="list-group-item">🎯 Difficulty Level</li>
+                <li class="list-group-item">⭐ Course Rating</li>
+                <li class="list-group-item">🧾 Course Description</li>
+                <li class="list-group-item">🏷️ Department</li>
+            </ul>
+        </div>
+    </section>
+
+    <div class="text-center my-5">
+        <a href="/recommend" class="btn btn-lg shadow-sm">
+            🚀 Try Course Recommendations
+        </a>
+    </div>
+
+    <p class="text-center mt-4" style="color:white">
+        This project is developed strictly for academic and educational purposes
+        as part of the CS619 Final Project.
+    </p>
+    <footer>
+        <div>
+            <br>
+            <P>&copy 2025 SmartCourse | Developed for CS619 Final Project | Supervisor: Muhammad Bilal</P>
+        </div>
+    </footer>
+</body>
+</html>

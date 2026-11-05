@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styleRe.css') }}">
+</head>
+    <body>
+        <header>
+            <br>
+            <h2 class="logo"> AI SMARTCOURSE</h2>
+            <nav>
+                <a href="/Index">Home</a>
+                <a href="/dashboard">Dashboard</a>
+                <a href="/recommend" class="recommand">Recommendation </a>
+                <a href="/about">About </a>
+            </nav>
+        </header>
+        <!-- Title -->
+        <div class="container mt-5">
+            <h1 class="text-center fw-bold" id="heading">Course Recommendation</h1>
+        </div>
+
+        <!-- Input Section -->
+        <section class="container my-4">
+            <div class="card shadow-sm p-4">
+
+                <h3 class="section-title" style="color: #912f56;">Tell us what you want to learn</h3>
+
+                <textarea id="userQuery" class="form-control mb-3" rows="3"
+                          placeholder="Example: I want to learn Python for data science"></textarea>
+
+                <div class="row align-items-center">
+                    <div class="col-md-6 mb-3">
+                        <label class="fw-bold">Choose Model:</label>
+                        <select id="modelSelect" class="form-select">
+                            <option value="tfidf">TF-IDF (Keyword Based)</option>
+                            <option value="neural">Neural Model (Semantic)</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-6 mb-3 text-end">
+                        <button class="btn btn-lg mt-4" onclick="getRecommendations()">
+                            Get Recommendations
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results -->
+        <section class="container my-5">
+            <h3 class="section-title" id="heading">Recommended Courses</h3>
+            <div id="resultsArea"></div>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+            <!-- Frontend JS -->
+            <script>
+                async function getRecommendations() {
+                    const query = document.getElementById("userQuery").value;
+                    const model = document.getElementById("modelSelect").value;
+
+                    if (query.trim() === "") {
+                        alert("Please enter your preference first.");
+                        return;
+                    }
+
+                    const requestBody = {
+                        query: query,
+                        model: model
+                    };
+
+                    try {
+                        const response = await fetch("/api/recommend", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify(requestBody)
+                        });
+
+                        const courses = await response.json();
+                        displayResults(courses);
+
+                    } catch (error) {
+                        console.error(error);
+                        alert("Backend error! Check console.");
+                    }
+                }
+
+                function displayResults(courses) {
+                    const resultsArea = document.getElementById("resultsArea");
+                    resultsArea.innerHTML = "";
+
+                    if (courses.length === 0) {
+                        resultsArea.innerHTML = "<p>No recommendations found.</p>";
+                        return;
+                    }
+
+                    courses.forEach(course => {
+                        const card = document.createElement("div");
+                        card.className = "card result-card shadow-sm p-4 mb-3";
+
+                        card.innerHTML = `
+            <h5 class="fw-bold">${course.course_name}</h5>
+            <p class="text-muted mb-1">Department: ${course.department}</p>
+            <p class="text-muted">${course.description}</p>
+
+            <label class="fw-bold">Relevance Score: ${course.relevance}%</label>
+            <div class="progress mb-3">
+                <div class="progress-bar" style="width:${course.relevance}%"></div>
+            </div>
+
+            <button class="save-btn btn btn-sm">Save Recommendation</button>
+        `;
+
+                        // ✅ event listener 
+                        card.querySelector(".save-btn").addEventListener("click", () => {
+                            saveCourse(
+                                course.course_name,
+                                course.department,
+                                course.description,
+                                course.relevance
+                            );
+                        });
+
+                        resultsArea.appendChild(card);
+                    });
+                }
+                async function saveCourse(course_name, department, description, relevance) {
+                    try {
+                        const response = await fetch("/api/save", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                                course_name: course_name,
+                                department: department,
+                                description: description,
+                                relevance: relevance
+                            })
+                        });
+
+                        const data = await response.json();
+
+                        if (response.ok) {
+                            alert("Course saved successfully!");
+                        } else {
+                            alert("Save failed");
+                            console.error(data);
+                        }
+
+                    } catch (error) {
+                        console.error("Save error:", error);
+                        alert("Server error");
+                    }
+                }
+
+
+            </script>
+        </section>
+        <footer>
+            <div>
+                <br>
+                <P>&copy 2025 SmartCourse | Developed for CS619 Final Project | Supervisor: Muhammad Bilal</P>
+            </div>
+        </footer>
+    </body>
+</html>

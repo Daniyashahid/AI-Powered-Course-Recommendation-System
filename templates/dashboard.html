@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styleDa.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <br>
+        <h2 class="logo"> AI SMARTCOURSE</h2>
+        <nav>
+            <a href="/Index">Home</a>
+            <a href="/dashboard" class="dashboard">Dashboard</a>
+            <a href="/recommend">Recommendation </a>
+            <a href="/about">About </a>
+        </nav>
+    </header>
+    <!--Dashboard title-->
+    <div class="container mt-5">
+        <h1 class="text-center fw-bold mb-4">User Dashboard</h1>
+    </div><br>
+    <!--Search history-->
+    <section class="container mb-5">
+        <h2 class="heading">Search History</h2>
+
+        <div class="card card-custom shadow-sm p-4">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>#</th>
+                            <th>User Query</th>
+                            <th>Model Used</th>
+                            <th>Date & Time</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyTable">
+                    </tbody>
+                </table>
+            </div>
+            <div class="text-end mt-3">
+                <button class="btn btn-danger btn-sm" onclick="clearHistory()">Clear History</button>
+                <script>
+                    async function clearHistory() {
+                        if (!confirm("Are you sure you want to clear history?")) return;
+
+                        try {
+                            const response = await fetch("/api/clear_history", { method: "POST" });
+                            if (response.ok) {
+                                loadHistory();
+                            }
+                        } catch (error) {
+                            console.error("Error clearing history:", error);
+                        }
+                    }
+                </script>
+            </div>
+        </div>
+    </section>
+    <!-- Charts Section -->
+    <section class="container mb-5">
+        <h2 class="heading">Analytics</h2>
+        <div class="row g-4">
+
+            <!-- Chart 1: Model Usage (Pie) -->
+            <div class="col-md-6">
+                <div class="card card-custom shadow-sm p-4">
+                    <h5 class="fw-bold">Model Usage</h5>
+                    <canvas id="modelChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Chart 2: Search Activity (Bar) -->
+            <div class="col-md-6">
+                <div class="card card-custom shadow-sm p-4">
+                    <h5 class="fw-bold">Search Activity</h5>
+                    <canvas id="activityChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Saved Recommendations -->
+    <section class="container mb-5">
+        <h2 class="heading">Saved Recommendations</h2>
+        <div class="card card-custom shadow-sm p-4">
+            <div id="savedList">
+            </div>
+        </div>
+    </section>
+    <section class="container mb-5">
+        <h2 class="heading">Model Comparison</h2>
+        <!-- Model Comparison Input -->
+        <div class="container mb-4">
+            <div class="card p-3 shadow-sm">
+                <label class="fw-bold mb-2">Enter query for model comparison</label>
+                <input type="text" id="compareQuery" class="form-control mb-3"
+                       placeholder="e.g. I want to learn Python for data science">
+
+                <button class="btn" id="modelbtn" onclick="compareModels()">
+                    Compare Models
+                </button>
+            </div>
+        </div>
+    </section>
+    <!-- Model Comparison -->
+    <section class="container mb-5">
+        <h2 class="heading">Model Comparison Results</h2>
+
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card card-custom shadow-sm p-4">
+                    <h5 class="fw-bold" style="color: #912f56">TF-IDF Results</h5>
+                    <ul class="list-group list-group-flush" id="tfidfResults">
+                        <!-- Data from Flask -->
+                    </ul>
+                </div>
+            </div>
+            <script>
+
+                function displayComparison(tfidfResults, neuralResults) {
+                    const tfidfList = document.getElementById("tfidfResults");
+                    const neuralList = document.getElementById("neuralResults");
+
+                    tfidfList.innerHTML = "";
+                    neuralList.innerHTML = "";
+
+                    tfidfResults.forEach(course => {
+                        tfidfList.innerHTML += `<li class="list-group-item">${course.course_name} - ${course.relevance}%</li>`;
+                    });
+
+                    neuralResults.forEach(course => {
+                        neuralList.innerHTML += `<li class="list-group-item">${course.course_name} - ${course.relevance}%</li>`;
+                    });
+                }
+            </script>
+            <div class="col-md-6">
+                <div class="card card-custom shadow-sm p-4">
+                    <h5 class="fw-bold" style="color: #912f56">Neural Model Results</h5>
+                    <ul class="list-group list-group-flush" id="neuralResults">
+                        <!-- Data from Flask -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        function buildCharts(historyData) {
+            const mc = Chart.getChart('modelChart');
+            const ac = Chart.getChart('activityChart');
+            if (mc) mc.destroy();
+            if (ac) ac.destroy();
+
+            // ── Chart 1: Model Usage Pie ──
+            let tfidfCount = 0, neuralCount = 0, compareCount = 0;
+            historyData.forEach(item => {
+                if (item.model === 'tfidf') tfidfCount++;
+                else if (item.model === 'neural') neuralCount++;
+                else compareCount++;
+            });
+
+            new Chart(document.getElementById('modelChart'), {
+                type: 'pie',
+                data: {
+                    labels: ['TF-IDF', 'Neural', 'Compare'],
+                    datasets: [{
+                        data: [tfidfCount, neuralCount, compareCount],
+                        backgroundColor: ['#912f56', '#3498db', '#2ecc71']
+                    }]
+                }
+            });
+
+            // ── Chart 2: Daily Search Activity Bar ──
+            const dateCounts = {};
+            historyData.forEach(item => {
+                const date = item.timestamp.split(' ')[0]; // sirf date lo
+                dateCounts[date] = (dateCounts[date] || 0) + 1;
+            });
+
+            new Chart(document.getElementById('activityChart'), {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(dateCounts),
+                    datasets: [{
+                        label: 'Searches per day',
+                        data: Object.values(dateCounts),
+                        backgroundColor: '#912f56'
+                    }]
+                },
+                options: {
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
+        }
+        async function loadHistory() {
+            try {
+                const response = await fetch("/api/history");
+                const data = await response.json();
+
+                const tableBody = document.getElementById("historyTable");
+                tableBody.innerHTML = "";
+
+                if (data.length === 0) {
+                    tableBody.innerHTML = `
+                        <tr>
+                            <td colspan="4" class="text-center text-muted">
+                                No search history found.
+                            </td>
+                        </tr>`;
+                    buildCharts([]);
+                    return;
+                }
+
+                data.forEach((item, index) => {
+                    const modelBadge =
+                        item.model === "tfidf"
+                            ? `<span class="badge bg-primary">TF-IDF</span>`
+                            : `<span class="badge bg-success">Neural</span>`;
+
+                    tableBody.innerHTML += `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${item.query}</td>
+                            <td>${modelBadge}</td>
+                            <td>${item.timestamp}</td>
+                        </tr>
+                    `;
+                });
+                buildCharts(data);
+            } catch (error) {
+                console.error("Error loading history:", error);
+            }
+        }
+
+        async function loadSaved() {
+            try {
+                const response = await fetch("/api/saved");
+                const data = await response.json();
+
+                const container = document.getElementById("savedList");
+                container.innerHTML = "";
+
+                if (data.length === 0) {
+                    container.innerHTML = "<p class='text-muted'>No saved recommendations.</p>";
+                    return;
+                }
+
+                data.forEach(item => {
+                    container.innerHTML += `
+            <div class="card mb-2 p-2 d-flex flex-row justify-content-between align-items-start">
+                <div>
+                    <strong>${item.course_name}</strong> - ${item.department}<br>
+                    ${item.description}<br>
+                    Relevance: ${item.relevance}%
+                </div>
+                <button 
+                    class="btn btn-danger btn-sm ms-3" 
+                    onclick="deleteRecommendation(${item.id})">
+                    Remove
+                </button>
+            </div>
+        `;
+                });
+
+            } catch (error) {
+                console.error("Error loading saved:", error);
+            }
+        }
+
+        async function deleteRecommendation(id) {
+            if (!confirm("Remove this recommendation?")) return;
+
+            try {
+                const response = await fetch(`/api/saved/delete/${id}`, {
+                    method: "DELETE"
+                });
+
+                if (response.ok) {
+                    loadSaved(); // list refresh
+                } else {
+                    alert("Failed to remove recommendation.");
+                }
+            } catch (error) {
+                console.error("Delete error:", error);
+            }
+        }
+
+        async function compareModels() {
+            const query = document.getElementById("compareQuery").value;
+
+            if (!query) {
+                alert("Please enter a query first");
+                return;
+            }
+
+            try {
+                const response = await fetch("/api/compare", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ query })
+                });
+
+                const data = await response.json();
+                displayComparison(data.tfidf, data.neural);
+
+            } catch (error) {
+                console.error("Comparison error:", error);
+            }
+        }
+
+        function displayComparison(tfidfResults, neuralResults) {
+            const tfidfList = document.getElementById("tfidfResults");
+            const neuralList = document.getElementById("neuralResults");
+
+            tfidfList.innerHTML = "";
+            neuralList.innerHTML = "";
+
+            tfidfResults.forEach(course => {
+                tfidfList.innerHTML += `<li class="list-group-item">
+                    ${course.course_name} - ${course.relevance}%
+                </li>`;
+            });
+
+            neuralResults.forEach(course => {
+                neuralList.innerHTML += `<li class="list-group-item">
+                    ${course.course_name} - ${course.relevance}%
+                </li>`;
+            });
+        }
+
+        /*  PAGE LOAD */
+        window.onload = () => {
+            loadHistory();
+            loadSaved();
+        };
+    </script>
+    <footer>
+        <div>
+            <br>
+            <P>&copy 2025 SmartCourse | Developed for CS619 Final Project | Supervisor: Muhammad Bilal</P>
+        </div>
+    </footer>
+</body>
+</html>

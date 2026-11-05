@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartCourse</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='Style.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+<header> <br>
+    <h2 class="logo"> AI SMARTCOURSE</h2>
+    <nav>
+        <a href="/Index" class="Home">Home</a>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/recommend">Recommendation </a>
+        <a href="/about">About </a>
+    </nav>
+</header>
+<body>
+    <div class="welcome">
+        <h1 class="fw-bold mb-4">Welcome to SmartCourse</h1>
+        <p><i>AI-powered course recommendation system using NLP & Machine Learning.</i></p>
+        <button><a href="/recommend" class="btn"><b>Get Recommendation →</b></a></button>
+    </div>
+    <div class="intro">
+        <br>
+        <h2 class="fw-bold mb-4">Project Overview</h2>
+        <p>SmartCourse is an intelligent recommendation engine that addresses educational discovery challenges through advanced NLP and machine learning. The system implements dual algorithmic approaches: a TF-IDF vectorization model for precise keyword matching and a neural sentence-transformers model for semantic understanding. Using a comprehensive course dataset, the application processes natural language queries to deliver personalized course recommendations. The end product provides unique results for each query by analyzing semantic relationships and keyword relevance, ensuring different preferences yield distinct, context-aware recommendations. SmartCourse is an AI-powered recommendation system designed to simplify educational discovery. Using both TF-IDF and neural semantic models, it provides personalized and intelligent course recommendations based on user interests and goals. </p> <br>
+    </div>
+    <div>
+        <section class="py-5">
+            <div class="container text-center">
+                <h2 class="fw-bold mb-4">System Capabilities</h2>
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="card feature-card p-4 border-0 shadow-sm">
+                            <h4>🔍 TF-IDF Model</h4>
+                            <p class="text-muted">
+                                Finds courses based on exact keyword matching for accurate, context-relevant results.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card feature-card p-4 border-0 shadow-sm">
+                            <h4>🧠 Neural Model</h4>
+                            <p class="text-muted">
+                                Uses deep learning and sentence transformers for semantic understanding of queries.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card feature-card p-4 border-0 shadow-sm">
+                            <h4>📊 Personalized Results</h4> <br>
+                            <p class="text-muted">
+                                Generates unique, preference-based recommendations with relevance scores.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <footer>
+        <div>
+            <br>
+            <P>&copy 2025 SmartCourse | Developed for CS619 Final Project | Supervisor: Muhammad Bilal</P>
+        </div>
+    </footer>
+</body>
+</html>

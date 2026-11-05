@@ -1,0 +1,93 @@
+﻿* {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+header {
+    width: 100%;
+    height: 100px;
+    color: #eaf2ef;
+    background-color: #912f56;
+    font-family: 'Times New Roman', Times, serif;
+    display: flex;
+    position: static;
+}
+
+.logo {
+    justify-content: space-around;
+    display: inline;
+    color: white;
+    font-style: italic;
+    width: 400px;
+    margin-left: 40px;
+    margin-top: 40px;
+    font-size: 20px;
+    font-weight: bolder;
+}
+
+nav {
+    margin-left: 40%;
+    display: flex;
+    font-weight: bold;
+    justify-content: space-between;
+    width: 70%;
+    margin-right: 50px;
+}
+
+    nav a {
+        text-decoration: none;
+        list-style-type: none;
+        display: inline-flex;
+        justify-content: space-between;
+        color: white;
+        line-height: 200%;
+        margin-top: 35px;
+        margin-right: 20px;
+        margin-left: 10px;
+    }
+
+        nav a:hover {
+            text-shadow: 0 0 7px white;
+        }
+
+.dashboard {
+    text-shadow: 0 0 7px white;
+}
+
+body {
+    width: 100%;
+    background: url("/static/image/ai1.jpg") no-repeat fixed center;
+    background-size: cover;
+    color: white;
+}
+
+.heading {
+    text-align: center;
+    font-weight: bolder;
+}
+#modelbtn {
+    background-color: #912f56;
+    color: white;
+}
+#modelbtn:hover {
+    background-color: #eaf2ef;
+    color: #912f56;
+}
+.card-custom {
+    border-radius: 15px;
+    transition: 0.3s ease;
+}
+
+    .card-custom:hover {
+        transform: translateY(-4px);
+        box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.1);
+    }
+
+footer {
+    width: 100%;
+    height: 70px;
+    background-color: #912f56;
+    color: white;
+    text-align: center;
+    margin-bottom: 0px;
+}

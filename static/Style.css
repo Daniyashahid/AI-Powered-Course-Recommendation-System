@@ -1,0 +1,139 @@
+*{
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+header{
+    width: 100%;
+    height: 100px;
+   color: #eaf2ef;
+   background-color: #912f56;
+    font-family: 'Times New Roman', Times, serif;
+    display: flex;
+    position:static;
+}
+.logo{
+   justify-content: space-around;
+    display: inline;
+    color: white;
+    font-style: italic;
+    width: 400px;
+    margin-left: 40px;
+    margin-top: 40px;
+    font-size: 20px;
+    font-weight: bolder;
+}
+nav{
+    margin-left: 40%;
+    display: flex;
+    font-weight: bold;
+    justify-content: space-between;
+    width: 70%;
+    margin-right: 50px;
+}
+nav a{
+    text-decoration: none;
+    list-style-type: none;
+    display: inline-flex;
+    justify-content: space-between;
+    color:white;    
+    line-height: 200%;
+    margin-top: 35px;
+    margin-right: 20px;
+    margin-left: 10px;
+}
+nav a:hover{
+    text-shadow:0 0 7px white; 
+}
+.Home{
+    text-shadow:0 0 7px white; 
+}
+
+body{
+    width: 100%;
+    background-color: #eaf2ef;
+  background: url("/static/image/ai1.jpg") no-repeat center fixed;
+  background-size: cover;
+}
+.welcome{
+    
+    text-align: center;
+    color: white;
+    height: 400px;
+    padding: 80px 0;
+    text-align: center;
+}
+.welcome i{
+    font-size: 25px;
+    margin-top: 10px;
+    font-style: italic;
+}
+.welcome button{
+    width: 280px;
+    height: 50px;
+    margin-top: 20px;
+    background-color: white;
+    color: #912f56;
+    font-weight: bold;
+    border-radius: 10px;
+    text-align: center;
+    line-height: 30px;
+}
+.btn{
+    text-decoration: none;
+    color: #912f56;
+    font-weight: bold;
+    font-size: 20px;
+    overflow: hidden;
+    height: 40px;
+    width: 270px;
+    text-align: center;
+}
+.btn:hover{
+    background-color:#912f56;
+    color: white;
+    
+}
+.welcome button:hover{
+    background-color:#912f56;
+    color: white;
+}
+.intro{
+    width: 100%;
+    height: auto ;
+    text-align: left;
+    background-color: white;
+    align-items: center;
+    color: black;
+    margin-top: -20px;
+}
+.intro h2{
+    text-align: center;
+    color: #912f56;
+}
+.intro p{
+    margin: 20px;
+    margin-top: 20px;
+    line-height: 25px;
+    font-size: 20px;
+}
+.py-5 h2{
+    color: white;
+}
+.feature-card {
+      transition: all 0.3s ease;
+      border-radius: 15px;
+    }
+.feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    }
+.container h4{
+    color: #912f56;
+}
+footer{
+    width: 100%;
+    height: 70px;
+    background-color: #912f56;
+    color: white;
+    text-align: center; 
+}
